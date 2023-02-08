@@ -5,12 +5,12 @@ import Logo from "./logo_glitch.png.png";
 import NavButton from "./components/NavButton";
 import ItemListContainer from "./components/ItemListContainer";
 
-
 const App = () => {
-  const greeting="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type  including versions of Lorem Ipsum."
+  const greeting =
+    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type  including versions of Lorem Ipsum.";
   return (
     <>
-      <Navbar  id="1">
+      <Navbar>
         <NavButton />
       </Navbar>
       <main style={styles.firstContent}>
@@ -26,7 +26,6 @@ const App = () => {
           <img style={styles.logo} src={Logo} alt="" />
         </div>
       </main>
-      
     </>
   );
 };
@@ -38,11 +37,11 @@ export const styles = {
     gridAutoFlow: "column",
     justifyContent: "space-between",
     margin: "50px",
-    padding: "0px 50px"
+    padding: "0px 50px",
   },
   message: {
     padding: "100px 0px 0px 100px",
-    width:"500px",
+    width: "500px",
   },
   title: {
     margin: "0px",
@@ -56,11 +55,9 @@ export const styles = {
   },
   logo: {
     width: "500px",
-    padding:"0px 100px 0px 0px",
-    
-
+    padding: "0px 100px 0px 0px",
   },
-  letters:{
-    color:"white"
+  letters: {
+    color: "white",
   },
 };
