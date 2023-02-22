@@ -1,27 +1,32 @@
 import React from "react";
+import { Link, NavLink } from "react-router-dom";
 
-const NavCategories = ()=>{
-     const navCategories=[{id:0,name:"Home",ref:""},{id:1,name:"Products",ref:""},{id:2,name:"Catalog",ref:""},{id:3,name:"Contact us",ref:""}]
+const NavCategories = () => {
+  const navCategories = [
+    { id: 0, name: "Home", ref: "/" },
+    { id: 1, name: "Products", ref: "category/products" },
+    { id: 2, name: "Catalog", ref: "category/catalog" },
+    { id: 3, name: "Contact us", ref: "category/contact" },
+  ];
+  return navCategories.map(({ id, name, ref }) => {
     return (
-        navCategories.map(({id,name,ref})=>{
-            return( 
-            <a key={id} href={ref} style={styles.list}>{name}</a>)
-        })
-
-    )
+      <NavLink key={id} to={ref} style={styles.list}>
+        {name}
+      </NavLink>
+    );
+  });
 };
 
 export const styles = {
-    
-    list:{
-        color: "white",
-        margin:"1em",
-        listStyleType:"none",
-        textDecoration:"none",
-        fontFamily:"Jost",
-        fontSize:"18px"
-    }
-}
+  list: {
+    color: "white",
+    margin: "1em",
+    listStyleType: "none",
+    textDecoration: "none",
+    fontFamily: "Jost",
+    fontSize: "18px",
+  },
+  
+};
 
-
-export default NavCategories
+export default NavCategories;
