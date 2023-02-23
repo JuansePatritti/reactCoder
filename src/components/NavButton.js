@@ -1,14 +1,15 @@
 import React from 'react'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { Link } from 'react-router-dom';
 
 const NavButton = (prop) => {
   let a=3
   return (
-    <a style={styles.buttonDisplay} href="">
+    <Link style={styles.buttonDisplay} to="/cart">
       <ShoppingCartIcon style={styles.color}
       sx={{ fontSize: 23}}
        /> {a}
-      </a>
+      </Link>
   )
 }
 

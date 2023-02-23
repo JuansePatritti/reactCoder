@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import { Link } from "react-router-dom";
 
   const ItemList = ({products}) => { 
   return (
@@ -15,7 +16,7 @@ import Card from 'react-bootstrap/Card';
              <Card.Title style={styles.letters}>{prod.title}</Card.Title>
              <Card.Text style={styles.letters}>
              Price: ${prod.price}
-             <a href="">See details</a>
+             <Link to={`/product/${prod.id}`}>See details</Link>
              </Card.Text>
              <Button variant="outline-light">Add to cart</Button>{' '}
            </Card.Body>

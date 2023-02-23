@@ -6,7 +6,8 @@ import NavButton from "./components/NavButton";
 import ItemListContainer from "./components/ItemListContainer";
 import ItemList from "./components/ItemList";
 import ItemDetailContainer from "./components/ItemDetailContainer";
-import { BrowserRouter } from "react-router-dom";
+import Cart from "./components/Cart";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 const App = () => {
   return (
@@ -33,15 +34,20 @@ const App = () => {
             <img style={styles.logo} src={Logo} alt="" />
           </div>
         </main>
-        <ItemListContainer>
-          <ItemList />
-        </ItemListContainer>
-        <ItemDetailContainer />
+        <Routes>
+          <Route path="/" element={<ItemListContainer />} /> //home
+          <Route path="/category/:name" element={<ItemListContainer />} /> //cat
+          <Route path="/product/:id" element={<ItemDetailContainer />}/> //prod
+          <Route path="/cart" element={<Cart />} /> //cart
+        </Routes>
       </BrowserRouter>
     </>
   );
 };
-
+{
+  /* 
+         */
+}
 export default App;
 export const styles = {
   firstContent: {

@@ -1,14 +1,15 @@
 import React from "react";
 import NavCategories from "./NavCategories";
 import Logo from "../brand_logo.png";
+import { Link } from "react-router-dom";
 
 const Navbar=({message, children})=>{
 return(
     
     <header style={styles.header}>
-        <a href="">
+        <Link to={"/"}>
             <img style={styles.logo} src={Logo} alt="" />
-        </a>
+        </Link>
         <nav style={styles.nav}>
            <NavCategories />
            {children}

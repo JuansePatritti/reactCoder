@@ -4,10 +4,22 @@ import Button from 'react-bootstrap/Button';
 
 
 const ItemDetail = ({prod}) => {
-const add=1
-
+const stock=5
+const [quantity, setQuantity]=useState(0)
+const addProd = ()=>{
+if (quantity<stock) {
+    setQuantity(quantity+1)
+}
+    
+}
+const removeProd = ()=>{
+    if (quantity>0) {
+        setQuantity(quantity-1)
+    }
+        
+    }
   return (
-    <div>
+    <div style={styles.elements}>
         <Card  style={{ width: '18rem' }}>
            <Card.Img variant="top" src={prod.image} />
            <Card.Body style={styles.cardBody}>
@@ -16,9 +28,9 @@ const add=1
              Price: ${prod.price}
              <span>{prod.description}</span>
              </Card.Text>
-             <Button  variant="outline-light">-</Button>{' '}
-             <span style={styles.letters}>{add}</span>
-             <Button variant="outline-light">+</Button>{' '}
+             <Button onClick={removeProd} variant="outline-light">-</Button>{' '}
+             <span style={styles.letters}>{quantity}</span>
+             <Button onClick={addProd} variant="outline-light">+</Button>{' '}
            </Card.Body>
          </Card>
     </div>

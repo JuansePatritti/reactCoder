@@ -1,18 +1,22 @@
 import { grid } from "@mui/system";
 import React, { useState, useEffect } from "react";
 import ItemList from "./ItemList";
+import { useParams } from "react-router-dom";
 
 const ItemListContainer = () => {
   const [products, setProducts] = useState([]);
+  const {name}=useParams()
+  const url= name ? `https://fakestoreapi.com/products/category/${name}` : `https://fakestoreapi.com/products` 
+  
   useEffect(() => {
     const getProducts = async () => {
-      const res = await fetch("https://fakestoreapi.com/products");
+      const res = await fetch(url);
       const data = await res.json();
       setProducts(data)
       console.log(data);
     }
     getProducts()
-  },[])
+  },[name])
 
   return(
   <>
