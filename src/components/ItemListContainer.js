@@ -13,7 +13,6 @@ const ItemListContainer = () => {
       const res = await fetch(url);
       const data = await res.json();
       setProducts(data)
-      console.log(data);
     }
     getProducts()
   },[name])

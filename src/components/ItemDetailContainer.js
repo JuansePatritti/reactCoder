@@ -12,7 +12,7 @@ useEffect(() => {
       const res = await fetch(url);
       const data = await res.json();
       setProd(data)
-      console.log(data);
+      
     }
     getInfo()
   },[])

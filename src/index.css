@@ -14,5 +14,6 @@ code {
 }
 #root{
   display: grid;
- 
+ margin-bottom: 50px;
 }
+
