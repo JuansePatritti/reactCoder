@@ -1,6 +1,7 @@
 import React, { useContext,useState } from "react";
 import { CustomContext } from "./CustomContext";
-import { Link } from "react-router-dom";
+import { Toast } from 'react-bootstrap';
+import Form from 'react-bootstrap/Form';
 import {
   collection,
   addDoc,
@@ -10,21 +11,40 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase/firebase";
 import Button from "react-bootstrap/Button";
-import NewForm from "./CheckOut";
-import { style } from "@mui/system";
+
+
 
 const Cart = () => {
-  const { cart, totals, removeAProd, clear } = useContext(CustomContext);
+  
+  const { cart, totals,  clear } = useContext(CustomContext);
   const [isReady,setIsReady]=useState(true)
-  const removal= ()=>{
-    cart.map((prod)=>{
-      return(
-        prod.id
-      )
-    })
-    removeAProd()
-    
+
+  const PaymentSuccess = ({Id}) => {
+    const [show, setShow] = useState(true);
+  
+    return (
+      <Toast
+        onClose={() => setShow(false)}
+        show={show}
+        delay={5000}
+        autohide
+        style={{
+          position: 'fixed',
+          bottom: 20,
+          left: '50%',
+          right: '50%',
+          transform: 'translate(-50%, 0)',
+          minWidth: '250px',
+        }}
+      >
+        <Toast.Header>
+          <strong className="me-auto">Pago exitoso</strong>
+        </Toast.Header>
+        <Toast.Body>¡Tu pago se ha realizado con éxito! ID de la operación: {Id}</Toast.Body>
+      </Toast>
+    );
   }
+
   const endBuy = () => {
     const newCollection = collection(db, "sells");
     addDoc(newCollection, {
@@ -32,15 +52,19 @@ const Cart = () => {
       productos: cart,
       total: totals.total,
       time: serverTimestamp(),
-    }).then((result) => result.id);
+    }).then((result)=> result.id)
+    console.log(db);
+  
+    //PaymentSuccess(asd)
   };
-   const controles = () => {
+   const continueBuy = () => {
   //   const archive=[]
   //   cart.forEach(element => {
   //     archive.push({element})
   //     console.log(archive);
   //     return element
   setIsReady(false)
+  console.log();
 
      }
     
@@ -80,11 +104,33 @@ const Cart = () => {
       <h2 style={styles.total}>Total: ${totals.total}</h2>
       <div style={styles.botones}>
         <Button onClick={clear}>Vaciar carrito</Button>
-        <Button onClick={endBuy}>Finalizar Compra</Button>
-        <Button onClick={controles}>asd</Button>
+        <Button onClick={continueBuy}>Continuar Compra</Button>
+
          </div>
         </div>) : (<div>
-        <NewForm />
+          
+    <Form>
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+        <Form.Label>Nombre</Form.Label>
+        <Form.Control type="email" placeholder="Nombre" />
+        <Form.Text className="text-muted" id="namee" >
+          
+        </Form.Text>
+      </Form.Group>
+      <Form.Group className="mb-3" controlId="formBasicEmail">
+        <Form.Label>Direccion</Form.Label>
+        <Form.Control type="email" placeholder="Direccion" />
+        <Form.Text className="text-muted">
+          We'll never share your email with anyone else.
+        </Form.Text>
+      </Form.Group>
+
+      <Button onClick={endBuy} variant="primary">
+        Finalizar Compra
+      </Button>
+    </Form>
+  
+
         </div>
         )
       
