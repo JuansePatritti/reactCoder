@@ -1,14 +1,16 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { Link } from 'react-router-dom';
+import { CustomContext } from './CustomContext';
 
-const NavButton = (prop) => {
-  let a=3
+
+const NavButton = () => {
+  const { totals } = useContext(CustomContext);
   return (
     <Link style={styles.buttonDisplay} to="/cart">
       <ShoppingCartIcon style={styles.color}
       sx={{ fontSize: 23}}
-       /> {a}
+       /> {totals.qty > 0 && <p>{totals.qty}</p>}
       </Link>
   )
 }

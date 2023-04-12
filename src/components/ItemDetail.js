@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
+import { Link } from "react-router-dom";
 import { CustomContext } from "./CustomContext";
 
 const ItemDetail = ({ prod }) => {
   const stock = 5;
   const [quantity, setQuantity] = useState(0);
-  const {addToCart,removeAProd}= useContext(CustomContext)
+  const [isPressedButton, setIsPressedButton]= useState(false)
+  const {addToCart}= useContext(CustomContext)
  
   const addProd = () => {
     if (quantity < stock) {
@@ -15,6 +17,8 @@ const ItemDetail = ({ prod }) => {
   };
   const addAProductToCart=()=>{
       addToCart(prod,quantity)
+      setIsPressedButton(true)
+      console.log(prod, quantity);
 
     }
   const removeProd = () => {
@@ -24,7 +28,32 @@ const ItemDetail = ({ prod }) => {
     
   };
   return (
-    <div style={styles.elements}>
+     <div style={styles.elements}>
+           {isPressedButton? (
+            <div>
+             <Card style={{ width: "18rem" }}>
+             <Card.Img variant="top" src={prod.image} />
+             <Card.Body style={styles.cardBody}>
+               <Card.Title style={styles.letters}>{prod.title}</Card.Title>
+               <Card.Text style={styles.letters}>
+                 Price: ${prod.price}
+                 <span>{prod.description}</span>
+               </Card.Text>
+               </Card.Body>
+               </Card>
+
+            <Link to="/cart">
+            <Button  variant="outline-light">
+              Ver Carrito
+            </Button>{" "}
+            </Link>
+            <Link to={"/"}>
+            <Button  variant="outline-light">
+              Seguir comprando
+            </Button>{" "}
+            </Link>
+            </div>
+          ):(
       <Card style={{ width: "18rem" }}>
         <Card.Img variant="top" src={prod.image} />
         <Card.Body style={styles.cardBody}>
@@ -33,6 +62,8 @@ const ItemDetail = ({ prod }) => {
             Price: ${prod.price}
             <span>{prod.description}</span>
           </Card.Text>
+     
+        
           <div style={styles.cardButtons}>
             <Button onClick={removeProd} variant="outline-light">
               -
@@ -46,7 +77,7 @@ const ItemDetail = ({ prod }) => {
             <Button onClick={addAProductToCart}variant="outline-light">Add to cart</Button>{" "}
           </div>
         </Card.Body>
-      </Card>
+      </Card>)}
     </div>
   );
 };

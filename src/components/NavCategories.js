@@ -4,9 +4,9 @@ import { Link, NavLink } from "react-router-dom";
 const NavCategories = () => {
   const navCategories = [
     { id: 0, name: "Home", ref: "/" },
-    { id: 1, name: "Products", ref: "category/jewelery" },
-    { id: 2, name: "Catalog", ref: "category/men's clothing" },
-    { id: 3, name: "Contact us", ref: "category/women's clothing" },
+    { id: 1, name: "Jewels", ref: "category/jewelery" },
+    { id: 2, name: "Men's Item", ref: "category/men's clothing" },
+    { id: 3, name: "Women's Item", ref: "category/women's clothing" },
   ];
   return navCategories.map(({ id, name, ref }) => {
     return (
