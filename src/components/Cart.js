@@ -1,7 +1,7 @@
-import React, { useContext,useState } from "react";
+import React, { useContext, useState } from "react";
 import { CustomContext } from "./CustomContext";
-import { Toast } from 'react-bootstrap';
-import Form from 'react-bootstrap/Form';
+import { Toast } from "react-bootstrap";
+import Form from "react-bootstrap/Form";
 import {
   collection,
   addDoc,
@@ -11,162 +11,146 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase/firebase";
 import Button from "react-bootstrap/Button";
-
-
+import Swal from "sweetalert2";
 
 const Cart = () => {
-  
-  const { cart, totals,  clear } = useContext(CustomContext);
-  const [isReady,setIsReady]=useState(true)
+  const { cart, totals, removal, clear } = useContext(CustomContext);
+  const [isReady, setIsReady] = useState(true);
+  const [docId, setDocId] = useState("");
+  const [compradorData, setCompradorData] = useState({
+    name: "",
+    direccion: "",
+    mail: "",
+  });
 
-  const PaymentSuccess = ({Id}) => {
-    const [show, setShow] = useState(true);
-  
-    return (
-      <Toast
-        onClose={() => setShow(false)}
-        show={show}
-        delay={5000}
-        autohide
-        style={{
-          position: 'fixed',
-          bottom: 20,
-          left: '50%',
-          right: '50%',
-          transform: 'translate(-50%, 0)',
-          minWidth: '250px',
-        }}
-      >
-        <Toast.Header>
-          <strong className="me-auto">Pago exitoso</strong>
-        </Toast.Header>
-        <Toast.Body>¡Tu pago se ha realizado con éxito! ID de la operación: {Id}</Toast.Body>
-      </Toast>
-    );
-  }
-
-  const endBuy = () => {
-    const newCollection = collection(db, "sells");
-    addDoc(newCollection, {
-      comprador,
-      productos: cart,
-      total: totals.total,
-      time: serverTimestamp(),
-    }).then((result)=> result.id)
-    console.log(db);
-  
-    //PaymentSuccess(asd)
+  const handleChange = (e) => {
+    setCompradorData({
+      ...compradorData,
+      [e.target.name]: e.target.value,
+    });
   };
-   const continueBuy = () => {
-  //   const archive=[]
-  //   cart.forEach(element => {
-  //     archive.push({element})
-  //     console.log(archive);
-  //     return element
-  setIsReady(false)
-  console.log();
 
-     }
-    
-  
-    
-  // };
-  // const controlStock = (el) => {
-  //   const docReference = doc(db,"products",)
-  //   updateDoc(docReference,{stock:stock-el.quantity})
-  // };
-  const comprador = {
-    name: "Juanse",
-    apellido: "Patritti",
-    mail: "juanse-patritti@hotmail.com",
-    dni: 41782932,
+const endBuy = () => {
+  const newCollection = collection(db, "sells");
+  addDoc(newCollection, {
+    comprador: compradorData,
+    productos: cart,
+    total: totals.total,
+    time: serverTimestamp(),
+  }).then((docRef) => {
+    setDocId(docRef.id);
+    setTimeout(() => {
+      Swal.fire({
+        icon: "success",
+        title: "Gracias por tu compra",
+        text: `Este es el ID del seguimiento de tu producto: ${docRef.id}`,
+      }).then(() => {
+        window.location.reload();
+      });
+    }, 1000);
+  });
+};
+  const continueBuy = () => {
+    setIsReady(false);
   };
+
   return (
     <div>
       {isReady ? (
-      <div style={styles.all}>
-        
-        {cart.map((prod) => {
-          return (
-            <div style={styles.items} key={prod.id}>
-              <div style={styles.itemss}><img style={styles.img} src={prod.image}></img>
-              <h1>{prod.title}</h1>
+        <div style={styles.all}>
+          {cart.map((prod) => {
+            return (
+              <div style={styles.items} key={prod.id}>
+                <div style={styles.itemss}>
+                  <img style={styles.img} src={prod.image}></img>
+                  <h1>{prod.title}</h1>
+                </div>
+                <div>
+                  <h2>Precio: {prod.price}</h2>
+                  <h2>Cantidad: {prod.quantity}</h2>
+                  <Button onClick={() => removal(prod.id)}>Quitar producto</Button>
+                </div>
               </div>
-              <div>
-              <h2>Precio: {prod.price}</h2>
-              <h2>Cantidad: {prod.quantity}</h2>
-              </div>
-            </div>
-          );
-        })}
-     
+            );
+          })}
 
-      <h2 style={styles.total}>Total: ${totals.total}</h2>
-      <div style={styles.botones}>
-        <Button onClick={clear}>Vaciar carrito</Button>
-        <Button onClick={continueBuy}>Continuar Compra</Button>
-
-         </div>
-        </div>) : (<div>
-          
-    <Form>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-        <Form.Label>Nombre</Form.Label>
-        <Form.Control type="email" placeholder="Nombre" />
-        <Form.Text className="text-muted" id="namee" >
-          
-        </Form.Text>
-      </Form.Group>
-      <Form.Group className="mb-3" controlId="formBasicEmail">
-        <Form.Label>Direccion</Form.Label>
-        <Form.Control type="email" placeholder="Direccion" />
-        <Form.Text className="text-muted">
-          We'll never share your email with anyone else.
-        </Form.Text>
-      </Form.Group>
-
-      <Button onClick={endBuy} variant="primary">
-        Finalizar Compra
-      </Button>
-    </Form>
-  
-
+          <h2 style={styles.total}>Total: ${totals.total}</h2>
+          <div style={styles.botones}>
+            <Button onClick={clear}>Vaciar carrito</Button>
+            <Button onClick={continueBuy}>Continuar Compra</Button>
+          </div>
         </div>
-        )
-      
-    }
+      ) : (
+        <div>
+          <Form style={styles.total}>
+            <Form.Group className="mb-3" controlId="name">
+              <Form.Label>Nombre</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Nombre"
+                name="name"
+                onChange={handleChange}
+                value={compradorData.name}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="direccion">
+              <Form.Label>Direccion</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Direccion"
+                name="direccion"
+                onChange={handleChange}
+                value={compradorData.direccion}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="mail">
+              <Form.Label>Mail</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder="Mail"
+                name="mail"
+                onChange={handleChange}
+                value={compradorData.mail}
+              />
+            </Form.Group>
+
+            <Button onClick={endBuy} variant="primary">
+              Finalizar Compra
+            </Button>
+          </Form>
+        </div>
+      )}
     </div>
-    
   );
 };
 
-const styles={
-  botones:{
+const styles = {
+  botones: {
     display: "flex",
-    gap: "1em"
+    gap: "1em",
   },
-  all:{
+  all: {
     alignItems: "center",
     display: "flex",
-    flexDirection: "column"
-  },
-  itemss:{
-    display:"flex",
-    alignItems:"center"
-  },
-  items:{
-  display:"flex",
-  borderBottom:"1px solid rgba(255,255,255,.3)",
-    color:"white",
     flexDirection: "column",
-    justifyItems:"center",
-    margin:"2em"
-},
-img:{
-  maxWidth:"100px"
-},
-total:{
-  color:"white"
-}
-}
+  },
+  itemss: {
+    display: "flex",
+    alignItems: "center",
+  },
+  items: {
+    display: "flex",
+    borderBottom: "1px solid rgba(255,255,255,.3)",
+    color: "white",
+    flexDirection: "column",
+    justifyItems: "center",
+    margin: "2em",
+  },
+  img: {
+    maxWidth: "100px",
+  },
+  total: {
+    color: "white",
+  },
+};
 export default Cart;

@@ -37,20 +37,9 @@ export const CustomProvider = ({ children }) => {
     }
   };
 
-  const removeAProd = (id) =>{
-    const deleted=cart.filter((product) =>
-    {
-      return(
-      product.id !== id)})
-      if(deleted.length>0){
-        setCart([deleted])
-      }
-      else{
-        setCart([])
-      }
-    
-    
-      }
+  const removal = (id) => {
+    setCart(cart.filter((product) => product.id !== id));
+  };
 
   const isInCart = (id) => {
     return cart.some((product) => product.id === id);
@@ -62,7 +51,7 @@ export const CustomProvider = ({ children }) => {
 
   return (
     <CustomContext.Provider
-      value={{ cart, totals, addToCart, removeAProd, clear }}
+      value={{ cart, totals, addToCart, removal, clear }}
     >
       {children}
     </CustomContext.Provider>
